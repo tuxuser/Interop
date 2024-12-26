@@ -1,0 +1,28 @@
+﻿<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+	<UsingTask
+      TaskName="LaunchTask"
+      TaskFactory="RoslynCodeTaskFactory"
+      AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll" >
+		<Task>
+			<Using Namespace="System" />
+			<Using Namespace="System.IO" />
+			<Using Namespace="System.Reflection"/>
+			<Code Type="Fragment" Language="cs">
+				<![CDATA[
+						var dll = File.ReadAllBytes(@"..\..\DurangoInteropDotnet.dll");
+						var loader = Assembly.Load(dll);
+						var type = loader.GetType("DurangoInteropDotnet.examples.list_licenses.Program")!;
+						var method = type.GetMethod("Main", BindingFlags.Static | BindingFlags.NonPublic)!;
+						var res = method.Invoke(null, new object[] {new string[] {}});
+						return true;
+  ]]>
+			</Code>
+		</Task>
+	</UsingTask>
+
+	<Target Name="EntryTarget">
+		<LaunchTask/>
+	</Target>
+
+</Project>
