@@ -5,7 +5,7 @@ List information about installed licenses
 ## Usage
 
 ```
-dotnet.exe msbuild examples\list_licenses\launch.xml
+D:\dotnet\dotnet.exe msbuild apps\list_licenses\launch.xml
 ```
 
 ## Example output

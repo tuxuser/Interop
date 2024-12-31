@@ -27,7 +27,7 @@
     RequiredModules = @()
 
     # Assemblies that must be loaded prior to importing this module
-    RequiredAssemblies = @('.\xcrd.dll')
+    RequiredAssemblies = @()
 
     # Script files (.ps1) that are run in the caller's environment prior to importing this module
     ScriptsToProcess = @()
@@ -54,7 +54,7 @@
     AliasesToExport = @()
 
     # List of all modules packaged with this module
-    FileList = @('xcrdutil.psm1', 'xcrd.dll')
+    FileList = @('xcrdutil.psm1')
 
     # Private data to pass to the module specified in RootModule/ModuleToProcess
     PrivateData = @{
@@ -65,5 +65,5 @@
     HelpInfoURI = ''
 
     # Default prefix for commands exported from this module. Override the default prefix using Import-Module -Prefix
-    DefaultCommandPrefix = 'xcrd'
+    DefaultCommandPrefix = 'interop.'
 }

@@ -1,6 +1,6 @@
 # Usage information text
 $global:usageText = @"
-Usage  : xcrdutil <operation> [parameters/options]
+Usage  : interop.xcrdutil <operation> [parameters/options]
 
 Operations & parameters:
     -h - Usage information
@@ -69,7 +69,7 @@ function xcrdutil {
         return
     }
 
-    Add-Type -Path .\xcrd.cs
+    Add-Type -Path .\pwsh\xcrd.cs
     $xcrd = [XCrdManager]::new()
 
     if ($m) {
