@@ -9,28 +9,28 @@
 
   <!-- List of files to concat -->
   <ItemGroup>
-    <ConcatFiles Include="00_GlobalUsings.cs;01_Interop.cs;AppPackageMountManager.cs;FirewallManager.cs;LicenseManager.cs;Shellcode.cs;UserManager.cs;WinUserManager.cs;XCrd.cs">
+    <ConcatFiles Include="src\00_GlobalUsings.cs;src\01_Interop.cs;src\AppPackageMountManager.cs;src\FirewallManager.cs;src\LicenseManager.cs;src\Shellcode.cs;src\UserManager.cs;src\WinUserManager.cs;src\XCrd.cs">
       <Destination>aio.cs</Destination>
     </ConcatFiles>
-    <ConcatFiles Include="00_GlobalUsings.cs;01_Interop.cs;XCrd.cs">
+    <ConcatFiles Include="src\00_GlobalUsings.cs;src\01_Interop.cs;src\XCrd.cs">
       <Destination>xcrd.cs</Destination>
     </ConcatFiles>
-    <ConcatFiles Include="00_GlobalUsings.cs;01_Interop.cs;LicenseManager.cs">
+    <ConcatFiles Include="src\00_GlobalUsings.cs;src\01_Interop.cs;src\LicenseManager.cs">
       <Destination>license.cs</Destination>
     </ConcatFiles>
-    <ConcatFiles Include="00_GlobalUsings.cs;01_Interop.cs;UserManager.cs">
+    <ConcatFiles Include="src\00_GlobalUsings.cs;src\01_Interop.cs;src\UserManager.cs">
       <Destination>usermanager.cs</Destination>
     </ConcatFiles>
-    <ConcatFiles Include="00_GlobalUsings.cs;01_Interop.cs;AppPackageMountManager.cs">
+    <ConcatFiles Include="src\00_GlobalUsings.cs;src\01_Interop.cs;src\AppPackageMountManager.cs">
       <Destination>packagemount.cs</Destination>
     </ConcatFiles>
-    <ConcatFiles Include="00_GlobalUsings.cs;01_Interop.cs;WinUserManager.cs">
+    <ConcatFiles Include="src\00_GlobalUsings.cs;src\01_Interop.cs;src\WinUserManager.cs">
       <Destination>winuser.cs</Destination>
     </ConcatFiles>
-    <ConcatFiles Include="00_GlobalUsings.cs;01_Interop.cs;Shellcode.cs">
+    <ConcatFiles Include="src\00_GlobalUsings.cs;src\01_Interop.cs;src\Shellcode.cs">
       <Destination>sc.cs</Destination>
     </ConcatFiles>
-    <ConcatFiles Include="modules/xcrdutil.psm1">
+    <ConcatFiles Include="src\modules\xcrdutil.psm1">
       <Destination>xcrdutil.psm1</Destination>
     </ConcatFiles>
   </ItemGroup>
