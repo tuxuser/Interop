@@ -1,35 +1,49 @@
 name: Create Release
 
 on:
-  push:
-    tags:
-      - "v*"
+  workflow_run:
+    workflows: ["Build"]
+    types: [completed]
 
 permissions:
     contents: write
+    actions: read
 
 jobs:
   release:
     runs-on: windows-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    - name: Setup .NET SDK 8.0
-      uses: actions/setup-dotnet@v2
+    - name: Get Run Id
+      id: get-run-id
+      shell: bash
+      env:
+        WORKFLOW_NAME: Build
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        RUN_ID=`gh run --repo ${{ github.repository }} list --workflow ${WORKFLOW_NAME} --json databaseId --jq .[0].databaseId`
+        echo "Workflow run id: ${RUN_ID}"
+        echo "run-id=${RUN_ID}" >> "$GITHUB_OUTPUT"
+
+    - uses: actions/download-artifact@v4
       with:
-        dotnet-version: 8.0.x
-    - name: Build
-      run: dotnet build src\DurangoInteropDotnet.csproj -property:Configuration=Release
+        name: win-release-artifacts
+        github-token: ${{ github.token }}
+        run-id: ${{ steps.get-run-id.outputs.run-id }}
+
+    - name: List files
+      run: ls -R .
+
     - name: Package
       shell: bash
       run: |
-        cd src/bin/Release/net8.0-windows
         7z a -tzip "DurangoInterop_${{github.ref_name}}.zip" "*"
+
     - name: Create Release
       uses: softprops/action-gh-release@v2
+      if: startsWith(github.ref, 'refs/tags/v')
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        files: "src/bin/Release/net8.0-windows/DurangoInterop_${{github.ref_name}}.zip"
+        token: ${{ github.token }}
+        files: "DurangoInterop_${{github.ref_name}}.zip"
         make_latest: true
         generate_release_notes: true
         fail_on_unmatched_files: true
