@@ -18,6 +18,7 @@ jobs:
       shell: bash
       env:
         WORKFLOW_NAME: Build
+        GH_TOKEN: ${{ github.token }}
       run: |
         RUN_ID=`gh run --repo ${{ github.repository }} list --workflow ${WORKFLOW_NAME} --json databaseId --jq .[0].databaseId`
         echo "Workflow run id: ${RUN_ID}"
