@@ -3,10 +3,6 @@ on:
   push:
   pull_request:
   workflow_call:
-    outputs:
-      run_id:
-        description: 'Run Id from this workflow'
-        value: ${{ jobs.build.outputs.run_id }}
 
 jobs:
   build:
@@ -32,9 +28,3 @@ jobs:
       with:
         name: win-release-artifacts
         path: src/bin/Release/net8.0-windows/**
-
-    - name: Create output variable(s)
-      id: get-run-id
-      shell: bash
-      run: |
-        echo "run_id=${{ github.run_id }}" >> $GITHUB_OUTPUT
