@@ -1,35 +1,26 @@
 name: Create Release
 
 on:
-  workflow_dispatch:
-    inputs:
-      version:
-        description: 'Release version'  
+  push:
+    tags:
+      - "v*"
 
 permissions:
     contents: write
-    actions: read
 
 jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+  
   release:
+    needs: build
     runs-on: windows-latest
     steps:
-    - name: Get Run Id
-      id: get-run-id
-      shell: bash
-      env:
-        WORKFLOW_NAME: Build
-        GH_TOKEN: ${{ github.token }}
-      run: |
-        RUN_ID=`gh run --repo ${{ github.repository }} list --workflow ${WORKFLOW_NAME} --json databaseId --jq .[0].databaseId`
-        echo "Workflow run id: ${RUN_ID}"
-        echo "run-id=${RUN_ID}" >> "$GITHUB_OUTPUT"
-
     - uses: actions/download-artifact@v4
       with:
         name: win-release-artifacts
         github-token: ${{ github.token }}
-        run-id: ${{ steps.get-run-id.outputs.run-id }}
+        run-id: ${{ jobs.build.outputs.run_id }}
 
     - name: List files
       run: ls -R .
@@ -37,13 +28,13 @@ jobs:
     - name: Package
       shell: bash
       run: |
-        7z a -tzip "DurangoInterop_${{ github.event.inputs.version }}.zip" "*"
+        7z a -tzip "DurangoInterop_${{github.ref_name}}.zip" "*"
 
     - name: Create Release
       uses: softprops/action-gh-release@v2
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        files: "DurangoInterop_${{ github.event.inputs.version }}.zip"
+        files: "DurangoInterop_${{github.ref_name}}.zip"
         make_latest: true
         generate_release_notes: true
         fail_on_unmatched_files: true

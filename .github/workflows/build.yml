@@ -2,33 +2,39 @@ name: Build
 on:
   push:
   pull_request:
-
-permissions:
-  contents: read
-  actions: write
+  workflow_call:
+    outputs:
+      run_id:
+        description: 'Run Id from this workflow'
+        value: ${{ jobs.build.outputs.run_id }}
 
 jobs:
   build:
     runs-on: windows-latest
+    outputs:
+      run_id: ${{ steps.get-run-id.outputs.run_id }}
+
     steps:
     - name: Checkout
       uses: actions/checkout@v4
+
     - name: Setup .NET SDK 8.0
       uses: actions/setup-dotnet@v2
       with:
         dotnet-version: 8.0.x
+
     - name: Build
       run: dotnet build src\DurangoInteropDotnet.csproj -property:Configuration=Release
+
     - name: Upload artifacts
+      id: upload-artifact
       uses: actions/upload-artifact@v4
       with:
         name: win-release-artifacts
         path: src/bin/Release/net8.0-windows/**
-    - name: Trigger release when a tag is pushed
-      if: startsWith( github.ref, 'refs/tags/v' )
-      env:
-        TARGET_WORKFLOW_NAME: Build
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Create output variable(s)
+      id: get-run-id
+      shell: bash
       run: |
-        echo Trigger release on a tag
-        gh workflow run --ref ${{ github.ref_name }} --field version=${{ github.github.ref_name }} ${{ env.TARGET_WORKFLOW_NAME }}
+        echo "run_id=${{ github.run_id }}" >> $GITHUB_OUTPUT
