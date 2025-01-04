@@ -31,4 +31,4 @@ jobs:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         echo Trigger release on a tag
-        gh workflow run --ref ${{ github.ref_name }} ${TARGET_WORKFLOW_NAME}
+        gh workflow run --ref ${{ github.ref_name }} --field version=${{ github.github.ref_name }} ${{ env.TARGET_WORKFLOW_NAME }}
