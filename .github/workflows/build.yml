@@ -28,8 +28,7 @@ jobs:
       if: startsWith( github.ref, 'refs/tags/v' )
       env:
         TARGET_WORKFLOW_NAME: Build
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         echo Trigger release on a tag
         gh workflow run --ref ${{ github.ref_name }} ${TARGET_WORKFLOW_NAME}
-      env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
